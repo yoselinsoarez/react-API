@@ -1,24 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
+
+
+
 
 function App() {
+  const [datos, setDatos] = useState ([])
+  
+  useEffect( () => {
+    const url='https://randomuser.me/api/?results=3';
+    const peticion=fetch(url);
+    peticion
+    .then(datos => datos.json())
+    .then(lectura => {
+      lectura.results.map((persona) => (
+        setDatos( (e) =>
+        [...e,<div className='personas' key={persona.email}>
+          <div>{persona.name.title} {persona.name.first} {persona.name.last}</div>
+          <div className='imagenes'>
+            <img src={persona.picture.large} alt=''/>
+          </div>
+        </div>])
+        
+        
+        
+            
+      ))
+    })
+    .catch (() => console.log('se ha producido un error'))
+  }, [])
+  
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <h1>Ganador@s</h1>
+    {datos}
+    </>
   );
 }
 
